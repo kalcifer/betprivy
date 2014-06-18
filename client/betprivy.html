@@ -1,0 +1,113 @@
+<head>
+  <title>betprivy</title>
+</head>
+
+<body>
+	
+</body>
+
+<template name="layout">
+	<div class="container">
+		<div class="row">
+			<div class="span1"></div>
+			<div class="span10">
+				<div class="header row">
+					<div class="span5">
+            <h3 style="margin-bottom: 0px; cursor: pointer;" class="home">{{greeting}}</h3>
+          </div>
+          <div class="span5">
+            <div style="float:right;">
+              {{> loginButtons align="right"}}
+            </div>
+          </div>
+				</div>
+				{{> yield}}
+			</div>
+			<div class="span1"></div>
+		</div>
+	</div>
+</template>
+
+<template name="index">
+	{{#if currentUser}}
+	<div class="row">
+		<div class="span2">
+			<a class="btn btn-info new-campaign" style="margin: 10px 0;" href="{{pathFor 'new'}}">New Campaign</a>
+		</div>
+		<div class="span8">
+			{{#if tables}}
+			<h4>Campaigns</h4>
+			<hr style="margin: 10px 0;">
+			{{#each tables}}
+				<div class="well">
+					<label>Name: </label>
+					<h4>{{name}}</h4>
+					<label>Invitees:</label>
+					{{#each invited}}
+					<span>{{this}}</span>
+					{{/each}}
+					<label>Created by: </label>
+					<span>{{owner}}</span>
+				</div>
+			{{/each}}
+			{{else}}
+			<h4>No Campaigns created. Create New.</h4>
+			{{/if}}
+		</div>
+	</div>
+	{{else}}
+	<div class="row">
+		<div class="span5">
+			Sign up if you haven't already. Or else Sign in.
+		</div>
+		<div class="span5"></div>
+	</div>
+	{{/if}}
+</template>
+
+<template name="new">
+	{{#if currentUser}}
+	<div class="row">
+		<div class="span2"></div>
+		<div class="span6">
+			<form>
+			  <fieldset>
+			    <legend>New Campaign</legend>
+			    <label>Campaign Name</label>
+			    <input type="text" placeholder="Campaign Name">
+			    <span class="help-block">&nbsp;</span>
+			    <legend>Invite People</legend>
+			    <span class="help-block">Invite more people to play the campaign</span>
+			    <label>Email ID</label>
+			    <input type="email" placeholder="Add Email ID" value="{{email}}">
+			    <button type="button" class="btn btn-link add-more" style="vertical-align: top;"><i class="icon-plus"></i> Add</button>
+			    <span class="help-block emailList">
+			    	{{> emailList}}
+			    </span>
+			    <button type="submit" class="btn">Create</button>
+			    <a class="btn btn-link" href="{{pathFor 'index'}}">Cancel</a>
+			  </fieldset>
+			</form>
+		</div>
+	<div class="span2"></div>
+	</div>
+	{{else}}
+	<div class="row">
+		<div class="span5">
+			Sign up if you haven't already. Or else Sign in.
+		</div>
+		<div class="span5"></div>
+	</div>
+	{{/if}}
+</template>
+
+<template name="emailList">
+	{{#if data}}
+	<span class="help-block">Invited:</span>
+	<ul style="width: 40%;">
+	{{#each data}}
+		<li class="invitee" data-email="{{this}}">{{this}} <i class="icon-remove pull-right hide" style="cursor: pointer;"></i></li>
+	{{/each}}
+	</ul>
+	{{/if}}
+</template>
